@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Harborview Family Clinic</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600;6..72,700&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Refined Color Palette */
+    --paper: #FCFAF8;
+    --panel: #F2EFEB;
+    --ink: #182422;
+    --teal: #285E5A;
+    --teal-deep: #163836;
+    --sage: #749685;
+    --clay: #B56240;
+    --line: rgba(22, 56, 54, 0.12);
+    
+    /* Elevation & Animation */
+    --shadow-sm: 0 4px 12px rgba(22, 56, 54, 0.05);
+    --shadow-md: 0 12px 32px rgba(22, 56, 54, 0.08);
+    --shadow-hover: 0 20px 48px rgba(22, 56, 54, 0.12);
+    --radius-lg: 16px;
+    --radius-md: 12px;
+    --transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body { background: var(--paper); color: var(--ink); font-family: 'Public Sans', sans-serif; line-height: 1.65; overflow-x: hidden; }
+  img { max-width: 100%; display: block; object-fit: cover; }
+  a { color: inherit; text-decoration: none; }
+  
+  .wrap { max-width: 1160px; margin: 0 auto; padding: 0 32px; }
+  h1, h2, h3 { font-family: 'Newsreader', serif; font-weight: 600; letter-spacing: -0.02em; }
+  .eyebrow { font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--teal); font-weight: 700; display: inline-block; margin-bottom: 8px; }
+  ::selection { background: var(--sage); color: #fff; }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--teal); outline-offset: 3px; border-radius: 4px; }
+
+  /* Smooth Scroll Reveal */
+  .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1); }
+  .reveal.in-view { opacity: 1; transform: translateY(0); }
+  .delay-1 { transition-delay: 0.1s; }
+  .delay-2 { transition-delay: 0.2s; }
+
+  /* Header & Navigation */
+  header { position: fixed; top: 0; left: 0; right: 0; z-index: 100; background: rgba(252, 250, 248, 0.9); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); transition: all var(--transition); }
+  nav { display: flex; align-items: center; justify-content: space-between; padding: 20px 32px; max-width: 1160px; margin: 0 auto; }
+  .logo { font-family: 'Newsreader', serif; font-weight: 700; font-size: 24px; color: var(--teal-deep); }
+  
+  .nav-group { display: flex; align-items: center; gap: 32px; }
+  .nav-links { display: flex; gap: 32px; list-style: none; }
+  .nav-links a { font-size: 15px; font-weight: 500; color: var(--ink); position: relative; padding: 4px 0; transition: color var(--transition); }
+  .nav-links a::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 2px; background: var(--teal); transition: width var(--transition); }
+  .nav-links a:hover { color: var(--teal); }
+  .nav-links a:hover::after { width: 100%; }
+  
+  .btn { display: inline-flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; padding: 14px 26px; background: var(--teal); color: #fff; border-radius: 6px; border: 1px solid var(--teal); transition: all var(--transition); cursor: pointer; box-shadow: var(--shadow-sm); }
+  .btn:hover { background: var(--teal-deep); border-color: var(--teal-deep); transform: translateY(-2px); box-shadow: var(--shadow-md); }
+  .btn-outline { background: transparent; color: var(--teal); border: 1px solid var(--teal); box-shadow: none; }
+  .btn-outline:hover { background: var(--teal); color: #fff; box-shadow: var(--shadow-sm); }
+
+  /* Mobile Menu Toggle */
+  .menu-toggle { display: none; background: none; border: none; color: var(--teal-deep); cursor: pointer; z-index: 101; padding: 8px; }
+
+  /* Hero Section */
+  .hero { padding: 180px 0 100px; border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
+  .hero::before { content: ''; position: absolute; top: -30%; left: -10%; width: 70vw; height: 70vw; background: radial-gradient(circle, rgba(116, 150, 133, 0.08) 0%, rgba(252, 250, 248, 0) 70%); border-radius: 50%; z-index: -1; pointer-events: none; }
+  .hero-grid { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 64px; align-items: center; }
+  .hero h1 { font-size: clamp(40px, 5.5vw, 64px); line-height: 1.05; margin-top: 12px; color: var(--teal-deep); }
+  .hero p { color: #435451; margin-top: 24px; max-width: 480px; font-size: 18px; line-height: 1.7; }
+  .hero-cta { display: flex; gap: 16px; margin-top: 36px; flex-wrap: wrap; }
+  
+  .avail-card { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 36px; box-shadow: var(--shadow-md); position: relative; }
+  .avail-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--sage); border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
+  .avail-card h3 { font-size: 18px; font-family: 'Public Sans', sans-serif; font-weight: 600; margin-bottom: 12px; color: var(--teal-deep); }
+  .avail-row { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-top: 1px solid var(--line); font-size: 15px; color: #435451; }
+  .avail-row:first-of-type { border-top: none; }
+  
+  /* Status Tags */
+  .avail-tag { font-size: 13px; font-weight: 600; padding: 6px 12px; border-radius: 20px; background: var(--panel); color: #5A6D6A; display: flex; align-items: center; gap: 6px; }
+  .avail-tag.open { background: rgba(116, 150, 133, 0.15); color: var(--teal-deep); }
+  .avail-tag.open::before { content: ''; display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--sage); box-shadow: 0 0 0 0 rgba(116, 150, 133, 0.7); animation: pulse 2s infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(116, 150, 133, 0.7); } 70% { box-shadow: 0 0 0 6px rgba(116, 150, 133, 0); } 100% { box-shadow: 0 0 0 0 rgba(116, 150, 133, 0); } }
+
+  section { padding: 112px 0; }
+  .section-head { max-width: 640px; margin-bottom: 64px; }
+  .section-head h2 { font-size: clamp(32px, 4.5vw, 48px); color: var(--teal-deep); }
+  .section-head p { color: #435451; margin-top: 16px; font-size: 18px; }
+
+  /* Services */
+  .services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+  .service-card { background: #fff; padding: 40px 32px; border: 1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); transition: all var(--transition); position: relative; overflow: hidden; }
+  .service-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); border-color: rgba(40, 94, 90, 0.3); }
+  .service-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 0%; height: 3px; background: var(--teal); transition: width var(--transition); }
+  .service-card:hover::after { width: 100%; }
+  .service-card .icon { width: 48px; height: 48px; border-radius: 50%; background: rgba(40, 94, 90, 0.08); display: flex; align-items: center; justify-content: center; color: var(--teal); font-weight: 600; font-family: 'Newsreader', serif; font-size: 18px; margin-bottom: 24px; }
+  .service-card h3 { font-size: 20px; font-family: 'Public Sans', sans-serif; font-weight: 600; color: var(--teal-deep); }
+  .service-card p { font-size: 15px; color: #5A6D6A; margin-top: 12px; line-height: 1.6; }
+
+  /* Steps */
+  .steps { background: var(--panel); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); position: relative; }
+  .step-row { display: flex; gap: 0; border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; background: #fff; box-shadow: var(--shadow-md); }
+  .step { flex: 1; padding: 48px 40px; border-right: 1px solid var(--line); position: relative; transition: background var(--transition); }
+  .step:hover { background: rgba(242, 239, 235, 0.3); }
+  .step:last-child { border-right: none; }
+  .step .n { font-family: 'Newsreader', serif; font-size: 40px; color: var(--sage); font-weight: 600; line-height: 1; margin-bottom: 20px; }
+  .step h3 { font-size: 20px; font-family: 'Public Sans', sans-serif; font-weight: 600; color: var(--teal-deep); }
+  .step p { font-size: 15px; color: #5A6D6A; margin-top: 12px; }
+
+  /* Providers */
+  .providers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; }
+  .provider-card { border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; background: #fff; box-shadow: var(--shadow-sm); transition: all var(--transition); display: flex; flex-direction: column; }
+  .provider-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-hover); }
+  .provider-photo { position: relative; aspect-ratio: 4/4.5; overflow: hidden; background: var(--panel); }
+  .provider-photo img { width: 100%; height: 100%; object-position: center 20%; transition: transform 0.6s ease; }
+  .provider-card:hover .provider-photo img { transform: scale(1.05); }
+  .provider-photo .initials { position: absolute; top: 16px; left: 16px; z-index: 2; font-family: 'Public Sans', sans-serif; font-size: 12px; font-weight: 700; color: var(--teal-deep); background: rgba(252, 250, 248, 0.9); backdrop-filter: blur(4px); padding: 6px 12px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .provider-info { padding: 28px 24px 32px; flex-grow: 1; }
+  .provider-info h3 { font-size: 20px; font-family: 'Public Sans', sans-serif; font-weight: 600; color: var(--teal-deep); }
+  .provider-role { font-size: 14px; color: var(--clay); margin-top: 6px; font-weight: 600; letter-spacing: 0.02em; }
+  .provider-info p { font-size: 14px; color: #5A6D6A; margin-top: 14px; line-height: 1.6; }
+
+  /* Insurance */
+  .insurance { background: var(--teal-deep); color: #F2EFEB; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); position: relative; overflow: hidden; }
+  .insurance::before { content: ''; position: absolute; top: 0; right: 0; width: 50vw; height: 100%; background: linear-gradient(90deg, rgba(22,56,54,0) 0%, rgba(40,94,90,0.2) 100%); pointer-events: none; }
+  .insurance .section-head h2 { color: #fff; }
+  .insurance .section-head p { color: #A2B5B0; }
+  .insurance-grid { display: flex; gap: 16px; flex-wrap: wrap; position: relative; z-index: 1; }
+  .ins-pill { border: 1px solid rgba(242, 239, 235, 0.2); background: rgba(242, 239, 235, 0.05); backdrop-filter: blur(4px); border-radius: 30px; padding: 12px 24px; font-size: 15px; font-weight: 500; transition: all var(--transition); cursor: default; }
+  .ins-pill:hover { background: rgba(242, 239, 235, 0.15); transform: translateY(-2px); border-color: rgba(242, 239, 235, 0.4); }
+
+  /* FAQ */
+  .faq { max-width: 760px; margin-top: 24px; }
+  .faq-item { border-top: 1px solid var(--line); padding: 32px 0; transition: background 0.3s ease; }
+  .faq-item:last-child { border-bottom: 1px solid var(--line); }
+  .faq-item h3 { font-size: 19px; font-family: 'Public Sans', sans-serif; font-weight: 600; color: var(--teal-deep); margin-bottom: 12px; }
+  .faq-item p { font-size: 16px; color: #5A6D6A; line-height: 1.6; }
+
+  /* CTA Band */
+  .cta-band { background: var(--teal); color: #fff; padding: 100px 0; text-align: center; position: relative; overflow: hidden; }
+  .cta-band::after { content: ''; position: absolute; bottom: -50%; left: 50%; transform: translateX(-50%); width: 100vw; height: 50vw; background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 60%); border-radius: 50%; pointer-events: none; }
+  .cta-band h2 { font-size: clamp(32px, 4.5vw, 48px); color: #fff; }
+  .cta-band p { margin-top: 20px; max-width: 540px; margin-left: auto; margin-right: auto; opacity: 0.9; font-size: 18px; }
+  .cta-band .btn { margin-top: 40px; background: #fff; color: var(--teal-deep); border-color: #fff; padding: 16px 36px; font-size: 16px; position: relative; z-index: 1; }
+  .cta-band .btn:hover { background: var(--panel); color: var(--teal-deep); transform: translateY(-3px); box-shadow: 0 10px 24px rgba(0,0,0,0.15); }
+
+  /* Footer */
+  footer { padding: 80px 0 40px; background: var(--paper); border-top: 1px solid var(--line); }
+  .footer-grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 48px; padding-bottom: 56px; border-bottom: 1px solid var(--line); }
+  .footer-col h4 { font-size: 14px; color: var(--teal); margin-bottom: 20px; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; }
+  .footer-col p, .footer-col a { display: block; font-size: 15px; color: #5A6D6A; margin-bottom: 12px; transition: color 0.2s; }
+  .footer-col a:hover { color: var(--teal); }
+  .footer-bottom { display: flex; justify-content: space-between; padding-top: 24px; font-size: 13px; color: #8F9E9B; flex-wrap: wrap; gap: 16px; }
+
+  /* Mobile Responsiveness */
+  @media (max-width: 992px) {
+    .services, .providers { grid-template-columns: repeat(2, 1fr); }
+    .hero-grid { gap: 40px; }
+  }
+
+  @media (max-width: 880px) {
+    .menu-toggle { display: block; }
+    .nav-group { position: absolute; top: 100%; left: 0; right: 0; background: #fff; flex-direction: column; padding: 32px; gap: 24px; border-bottom: 1px solid var(--line); box-shadow: var(--shadow-md); clip-path: polygon(0 0, 100% 0, 100% 0, 0 0); transition: clip-path 0.4s ease; }
+    .nav-group.active { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); }
+    .nav-links { flex-direction: column; align-items: center; width: 100%; gap: 20px; }
+    .nav-links a { font-size: 18px; }
+    
+    .hero-grid { grid-template-columns: 1fr; text-align: center; }
+    .hero p { margin: 24px auto 0; }
+    .hero-cta { justify-content: center; }
+    .avail-card { max-width: 500px; margin: 0 auto; text-align: left; }
+    
+    .step-row { flex-direction: column; }
+    .step { border-right: none; border-bottom: 1px solid var(--line); padding: 40px 32px; }
+    .step:last-child { border-bottom: none; }
+    
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 560px) {
+    .services, .providers, .footer-grid { grid-template-columns: 1fr; }
+    .hero { padding-top: 140px; }
+    .section-head h2 { font-size: 32px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <nav>
+    <div class="logo">Harborview Clinic</div>
+    <button class="menu-toggle" id="mobile-menu-btn" aria-expanded="false">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+    </button>
+    <div class="nav-group" id="nav-group">
+      <ul class="nav-links">
+        <li><a href="#services">Care</a></li>
+        <li><a href="#providers">Providers</a></li>
+        <li><a href="#insurance">Insurance</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <a href="#book" class="btn">Book a Visit</a>
+    </div>
+  </nav>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="reveal">
+      <span class="eyebrow">Primary & Family Care</span>
+      <h1>Same-week appointments.<br>A doctor who remembers your chart.</h1>
+      <p>Harborview is a family clinic built around one idea: you shouldn't have to re-explain your history at every visit. Walk-ins welcome, most visits booked within the week.</p>
+      <div class="hero-cta">
+        <a href="#book" class="btn">Book an Appointment</a>
+        <a href="#services" class="btn btn-outline">See What We Treat</a>
+      </div>
+    </div>
+    <div class="avail-card reveal delay-1">
+      <h3>Next Available</h3>
+      <div class="avail-row">
+        <span>Dr. Naomi Fields</span>
+        <span class="avail-tag open">Today, 3:40P</span>
+      </div>
+      <div class="avail-row">
+        <span>Dr. Elias Cho</span>
+        <span class="avail-tag open">Tomorrow, 9:15A</span>
+      </div>
+      <div class="avail-row">
+        <span>NP Priya Menon</span>
+        <span class="avail-tag">Thu, 11:00A</span>
+      </div>
+      <div class="avail-row">
+        <span>Dr. Naomi Fields</span>
+        <span class="avail-tag">Fri, 2:20P</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">What We Treat</span>
+      <h2 style="margin-top:8px;">Care for the everyday and the ongoing</h2>
+      <p>From a sore throat to managing a chronic condition, one clinic handles most of what comes up.</p>
+    </div>
+    <div class="services">
+      <div class="service-card reveal">
+        <div class="icon">01</div>
+        <h3>Everyday Illness & Injury</h3>
+        <p>Colds, flu, infections, minor injuries — same-week visits, most treated in one appointment.</p>
+      </div>
+      <div class="service-card reveal delay-1">
+        <div class="icon">02</div>
+        <h3>Chronic Condition Management</h3>
+        <p>Diabetes, hypertension, thyroid — ongoing care with a provider who tracks your history over time.</p>
+      </div>
+      <div class="service-card reveal delay-2">
+        <div class="icon">03</div>
+        <h3>Annual Physicals & Screenings</h3>
+        <p>Wellness exams, bloodwork, and preventive screening scheduled around your calendar, not ours.</p>
+      </div>
+      <div class="service-card reveal">
+        <div class="icon">04</div>
+        <h3>Pediatric Visits</h3>
+        <p>Checkups, vaccinations, and sick visits for kids, seen by providers who work with families daily.</p>
+      </div>
+      <div class="service-card reveal delay-1">
+        <div class="icon">05</div>
+        <h3>Women's Health</h3>
+        <p>Annual exams, contraceptive counseling, and referrals coordinated in-house when specialists are needed.</p>
+      </div>
+      <div class="service-card reveal delay-2">
+        <div class="icon">06</div>
+        <h3>Mental Health Check-Ins</h3>
+        <p>Screening and ongoing support for anxiety and depression, integrated into your regular care.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="steps">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Getting Started</span>
+      <h2 style="margin-top:8px;">From booking to seen, in three steps</h2>
+    </div>
+    <div class="step-row reveal delay-1">
+      <div class="step">
+        <div class="n">1</div>
+        <h3>Book online or call</h3>
+        <p>Pick a provider and a time that works — most weeks have same-week openings.</p>
+      </div>
+      <div class="step">
+        <div class="n">2</div>
+        <h3>Fill out intake ahead of time</h3>
+        <p>Complete your history online before you arrive, so the visit isn't spent on paperwork.</p>
+      </div>
+      <div class="step">
+        <div class="n">3</div>
+        <h3>See your provider</h3>
+        <p>Most visits run 20–30 minutes, with follow-ups and results available in your patient portal.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="providers">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">The Providers</span>
+      <h2 style="margin-top:8px;">Meet who you'll actually see</h2>
+      <p>Small enough that you'll usually see the same one or two providers, visit to visit.</p>
+    </div>
+    <div class="providers">
+      <div class="provider-card reveal">
+        <div class="provider-photo">
+          <span class="initials">N.F.</span>
+          <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=600" alt="Dr. Naomi Fields">
+        </div>
+        <div class="provider-info">
+          <h3>Dr. Naomi Fields</h3>
+          <div class="provider-role">Family Medicine</div>
+          <p>Focused on chronic condition management and preventive care. With Harborview since 2018.</p>
+        </div>
+      </div>
+      <div class="provider-card reveal delay-1">
+        <div class="provider-photo">
+          <span class="initials">E.C.</span>
+          <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?auto=format&fit=crop&q=80&w=600" alt="Dr. Elias Cho">
+        </div>
+        <div class="provider-info">
+          <h3>Dr. Elias Cho</h3>
+          <div class="provider-role">Internal Medicine</div>
+          <p>Sees adult patients for everyday illness and ongoing care, with a focus on cardiometabolic health.</p>
+        </div>
+      </div>
+      <div class="provider-card reveal delay-2">
+        <div class="provider-photo">
+          <span class="initials">P.M.</span>
+          <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&q=80&w=600" alt="Priya Menon, NP">
+        </div>
+        <div class="provider-info">
+          <h3>Priya Menon, NP</h3>
+          <div class="provider-role">Nurse Practitioner</div>
+          <p>Handles pediatric and women's health visits, plus same-week urgent appointments.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="insurance" id="insurance">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow" style="color:#A2B5B0;">Insurance</span>
+      <h2 style="margin-top:8px;">Most major plans accepted</h2>
+      <p>Not sure if yours is covered? Our front desk verifies benefits before your first visit — no surprises.</p>
+    </div>
+    <div class="insurance-grid reveal delay-1">
+      <div class="ins-pill">Blue Cross Blue Shield</div>
+      <div class="ins-pill">Aetna</div>
+      <div class="ins-pill">Cigna</div>
+      <div class="ins-pill">UnitedHealthcare</div>
+      <div class="ins-pill">Medicare</div>
+      <div class="ins-pill">Medicaid</div>
+      <div class="ins-pill" style="border-color:var(--clay); color:var(--clay);">Self-pay welcome</div>
+    </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <span class="eyebrow">Common Questions</span>
+      <h2 style="margin-top:8px;">Before you book</h2>
+    </div>
+    <div class="faq">
+      <div class="faq-item reveal">
+        <h3>Do I need a referral to book?</h3>
+        <p>No — you can book directly for any primary care visit. Referrals are only needed for certain specialists.</p>
+      </div>
+      <div class="faq-item reveal">
+        <h3>Can I be seen the same day?</h3>
+        <p>We hold same-day slots each morning for urgent, non-emergency issues. Call ahead to check availability.</p>
+      </div>
+      <div class="faq-item reveal">
+        <h3>What should I bring to my first visit?</h3>
+        <p>A photo ID, your insurance card, and a list of current medications, if you're not transferring records to us.</p>
+      </div>
+      <div class="faq-item reveal">
+        <h3>Is telehealth available?</h3>
+        <p>Yes, for follow-ups and certain consults. Your provider will let you know if a visit qualifies.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="cta-band" id="book">
+  <div class="wrap reveal">
+    <h2>Most weeks have room this week.</h2>
+    <p>Book online in under two minutes, or call the front desk if you'd rather talk it through.</p>
+    <a href="#" class="btn">Book an Appointment</a>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-col">
+        <div class="logo" style="margin-bottom:16px;">Harborview Clinic</div>
+        <p style="max-width:270px;">A family and primary care clinic built around continuity of care.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Visit</h4>
+        <p>240 Harborview Ave, Suite 3</p>
+        <p>Mon–Fri 8A – 6P · Sat 9A – 1P</p>
+      </div>
+      <div class="footer-col">
+        <h4>Clinic</h4>
+        <a href="#services">Care</a>
+        <a href="#providers">Providers</a>
+        <a href="#insurance">Insurance</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="#">(415) 555-0119</a>
+        <a href="#">frontdesk@harborviewclinic.com</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div>© 2026 Harborview Family Clinic.</div>
+      <div>Designed as a freelance portfolio concept.</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Mobile Menu Toggle
+  const menuBtn = document.getElementById('mobile-menu-btn');
+  const navGroup = document.getElementById('nav-group');
+  
+  menuBtn.addEventListener('click', () => {
+    const isExpanded = menuBtn.getAttribute('aria-expanded') === 'true';
+    menuBtn.setAttribute('aria-expanded', !isExpanded);
+    navGroup.classList.toggle('active');
+  });
+
+  // Close mobile menu on link click
+  document.querySelectorAll('.nav-links a, .nav-group .btn').forEach(link => {
+    link.addEventListener('click', () => {
+      navGroup.classList.remove('active');
+      menuBtn.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Scroll Reveal Animations
+  const revealElements = document.querySelectorAll('.reveal');
+  
+  const revealObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target); // Only animate once
+      }
+    });
+  }, {
+    root: null,
+    threshold: 0.15,
+    rootMargin: "0px 0px -50px 0px"
+  });
+
+  revealElements.forEach(el => revealObserver.observe(el));
+</script>
+
+</body>
+</html>
